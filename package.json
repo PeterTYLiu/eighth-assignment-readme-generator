@@ -1,0 +1,24 @@
+{
+  "name": "eighth-assignment-readme-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "readme-gen.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PeterTYLiu/eighth-assignment-readme-generator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PeterTYLiu/eighth-assignment-readme-generator/issues"
+  },
+  "homepage": "https://github.com/PeterTYLiu/eighth-assignment-readme-generator#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "fs": "0.0.1-security",
+    "inquirer": "^7.1.0"
+  }
+}
