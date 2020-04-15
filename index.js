@@ -1,9 +1,14 @@
 let inquirer = require("inquirer");
 let fs = require("fs");
-// let axios = require("axios");  Not required since we are no longer getting users' github info
+let axios = require("axios");
 
-let ask = async () => {
+(async () => {
   const prompts = [
+    {
+      type: "input",
+      name: "githubUsername",
+      message: "Enter your Github username: ",
+    },
     {
       type: "input",
       name: "title",
@@ -41,18 +46,42 @@ let ask = async () => {
       message: "What are some FAQs? ",
     },
   ];
+
   const answers = await inquirer.prompt(prompts);
+  const githubUser = await axios.get(
+    `https://api.github.com/users/${answers.githubUsername}`
+  );
+  let avatarURL = githubUser.data.avatar_url;
+  let safeBadgeContent = answers.license.split(" ").join("%20");
 
-  console.log(answers);
+  let readmeContent = `![a badge](https://img.shields.io/badge/license-${safeBadgeContent}-green)
+  # ${answers.title}
+  ## Description
+  ${answers.description}
+  # Contents
+  1. [License](#license)
+  2. [Usage](#usage)
+  3. [Contributing](#contributing)
+  4. [Tests](#tests)
+  5. [Questions](#questions)
+  ***
+  ## License
+  This project is published under the ${answers.license} license.
+  ## Usage
+  ${answers.usage}
+  ## Contributing
+  ${answers.contributing}
+  ## Tests
+  ${answers.tests}
+  ## Questions
+  ${answers.questions}
+  ***
+  A project by ${answers.githubUsername}
 
-  let readmeContent = `# ${answers.title}
-  ![a badge](https://img.shields.io/badge/license-${answers.license}-green)
-  ## ${answers.description}`;
+  ![profile image](${avatarURL})`;
 
   fs.writeFileSync(`${answers.title}-readme.md`, readmeContent, (err) => {
     if (err) return console.error("Unable to write to file");
-    return console.log("Successfully created readme");
+    console.log("Successfully created readme");
   });
-};
-
-ask();
+})();
